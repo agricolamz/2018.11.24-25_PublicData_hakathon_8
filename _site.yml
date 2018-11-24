@@ -1,0 +1,30 @@
+name: ''
+navbar:
+  left:
+  - icon: fa-home
+    href: index.html
+  - text: общие доходы
+    href: 01_overall_2010.html
+  - text: контракты
+    href: 02_contracts_2010.html
+  - text: гранты
+    href: 03_grants_2013.html
+  - text: субсидии
+    href: 04_subsidies_2001.html
+  - text: данные
+    href: 05_data.html
+  - text: презентация
+    href: 06_prezi.html
+output_dir: docs
+output:
+  html_document:
+    theme: spacelab
+    highlight: pygments
+    toc: no
+    smooth_scroll: no
+    df_print: paged
+    include:
+      after_body: footer.html
+    lib_dir: site_libs
+    self_contained: no
+

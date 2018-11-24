@@ -1,0 +1,76 @@
+
+# `r s_year` `r selected`
+
+```{r}
+df <- read_csv("overall_dataset.csv")
+
+df %>% 
+  filter(gov_support_type == selected_t,
+         year == s_year, 
+         region_name == "Москва") %>% 
+  group_by(region_code, region_name) %>% 
+  summarise(sum_mln = sum(sum_mln)) ->
+  moscow
+
+df %>% 
+  filter(gov_support_type == selected_t,
+         year == s_year, 
+         region_name == "Министерство юстиции") %>% 
+  group_by(region_code, region_name) %>% 
+  summarise(sum_mln = sum(sum_mln)) ->
+  minyust
+
+df %>% 
+  filter(gov_support_type == selected_t,
+         year == s_year, 
+         region_name != "Москва",
+         region_name != "Министерство юстиции") %>% 
+  group_by(region_code, region_name) %>% 
+  summarise(sum_mln = sum(sum_mln)) %>% 
+  ungroup() %>% 
+  mutate(ratio = sum_mln/sum(sum_mln)) ->
+  df
+
+ru <- geojsonio::geojson_read("russia.geojson", what = "sp")
+
+ru@data %>% 
+  left_join(df) ->
+  ru@data
+
+pal_1 <- colorNumeric(c("white", "navy"), NULL)
+pal_2 <- colorNumeric(c("white", "darkgreen"), NULL)
+
+m1 <- leaflet(ru) %>% 
+  addPolygons(stroke = TRUE,
+              color = "black",
+              weight = 1,
+              smoothFactor = 0.3, 
+              fillOpacity = 1,
+              fillColor = ~pal_1(ru@data$sum_mln),
+              label = ~paste0(ru@data$NAME_1,
+                              ": ", 
+                              round(ru@data$sum_mln, 4), " млн. р.")) %>%
+  addLegend(pal = pal_1, 
+            values = ru@data$sum_mln,
+            labFormat = labelFormat(suffix = " млн. р."))
+
+m2 <- leaflet(ru) %>% 
+  addPolygons(stroke = TRUE,
+              color = "black",
+              weight = 1,
+              smoothFactor = 0.3, 
+              fillOpacity = 1,
+              fillColor = ~pal_2(ru@data$ratio),
+              label = ~paste0(ru@data$NAME_1,
+                              ": ", 
+                              round(ru@data$ratio*100, 4), "%")) %>%
+  addLegend(pal = pal_2, 
+            values = ru@data$ratio*100,
+            labFormat = labelFormat(suffix = "%"))
+
+mapview::sync(m1, m2)
+```
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+
+### В Москве --- `r moscow$sum_mln` млн. р.
+### Не аффилиировано ни с каким регеоном --- `r minyust$sum_mln` млн. р.
