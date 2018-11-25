@@ -22,7 +22,7 @@ selected_t <- "subsidies"
 ```{r}
 s_year <- 2013
 ```
-### **[2010](04_subsidies_2010.html) [2011](04_subsidies_2011.html) [2012](04_subsidies_2012.html) [2013](04_subsidies_2013.html) [2014](04_subsidies_2014.html) [2015](04_subsidies_2015.html) [2016](04_subsidies_2016.html) [2017](04_subsidies_2017.html)**
+### **[2013](04_subsidies_2013.html) [2014](04_subsidies_2014.html) [2015](04_subsidies_2015.html) [2016](04_subsidies_2016.html) [2017](04_subsidies_2017.html)**
 
 # `r s_year` `r selected`
 

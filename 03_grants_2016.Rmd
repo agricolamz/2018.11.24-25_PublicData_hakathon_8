@@ -22,7 +22,8 @@ selected_t <- "grants"
 ```{r}
 s_year <- 2016
 ```
-### **[2010](03_grants_2010.html) [2011](03_grants_2011.html) [2012](03_grants_2012.html) [2013](03_grants_2013.html) [2014](03_grants_2014.html) [2015](03_grants_2015.html) [2016](03_grants_2016.html) [2017](03_grants_2017.html)**
+
+### **[2013](03_grants_2013.html) [2014](03_grants_2014.html) [2015](03_grants_2015.html) [2016](03_grants_2016.html)**
 
 # `r s_year` `r selected`
 

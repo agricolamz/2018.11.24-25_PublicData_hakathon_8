@@ -1,11 +1,12 @@
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, error = FALSE)
 library(tidyverse)
+theme_set(theme_bw())
 ```
 
-* Полученные данные доступны здесь
-* Скрипт, который обрабатывает json, находиться здесь
-* Скрипт, который пораждает вебстраницы находиться здесь
+* Полученные данные доступны [здесь](https://github.com/agricolamz/2018.11.24-25_PublicData_hakathon_8/blob/master/overall_dataset.csv)
+* Скрипт, который обрабатывает json, находиться [здесь](https://github.com/agricolamz/2018.11.24-25_PublicData_hakathon_8/blob/master/get_data.R)
+* Скрипт, который пораждает вебстраницы находиться [здесь](https://github.com/agricolamz/2018.11.24-25_PublicData_hakathon_8/blob/master/site_generater/site_generater.R)
 
 ```{r}
 df <- read_csv("overall_dataset.csv") 
@@ -16,4 +17,41 @@ df %>%
 ## Наблюдения, требующие дальнейшего рассмотрения
 
 * Некоторые регионы по наблюдениям почти не получают финансирования: Ненецкий автономный округ (0 записей), Чукотский автономный округ (12 записей)
+* Существует достаточно много НКО, которые не аффилиированы с административными единицами:
+
+```{r}
+df %>% 
+  filter(region_code == "00") %>% 
+  group_by(year) %>% 
+  summarise(n = n(),
+            sum = sum(sum_mln)) %>% 
+  ggplot(aes(year, n, label = paste0(n, " (", round(sum), " млн. р.)")))+
+  geom_col(fill = "lightblue")+
+  geom_text(hjust=-0.1)+
+  scale_x_continuous(breaks = 2000:2017)+
+  ylim(c(0, 350))+
+  coord_flip()+
+  labs(x = "", y = "", caption = "не аффилированы ни с каким годом --- 56")
+```
+
+* Существуют НКО, которые аффилиированы с несколькими административными регионами
+
+```{r, fig.width=12}
+df %>% 
+  distinct(region_name, organisation_name) %>% 
+  count(organisation_name) %>% 
+  filter(n > 1) %>% 
+  select(organisation_name) %>% 
+  inner_join(df) %>% 
+  group_by(organisation_name) %>% 
+  summarise(sum = sum(sum_mln)) %>% 
+  mutate(organisation_name = str_trunc(organisation_name, 100),
+         organisation_name = reorder(organisation_name, sum)) %>% 
+  ggplot(aes(organisation_name, sum, label = paste(round(sum, 3), "млн. р."))) + 
+  geom_col(fill = "lightblue")+
+  geom_text(hjust=-0.1)+
+  ylim(c(0, 40))+
+  coord_flip()+
+  labs(x = "", y = "")
+```
 
