@@ -55,3 +55,16 @@ df %>%
   labs(x = "", y = "")
 ```
 
+* Распределение финансов по разным типам НКО
+```{r, fig.height=40, fig.width=12}
+df %>%
+  filter(year > 2009) %>% 
+  group_by(organisation_type_name, year) %>% 
+  summarise(sum = sum(sum_mln)) %>% 
+  ggplot(aes(organisation_type_name, sum))+
+  geom_col(show.legend = FALSE)+
+  coord_flip()+
+  facet_wrap(~year, scale = "free", ncol = 1)+
+  labs(x = "", y = "")
+```
+

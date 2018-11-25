@@ -22,7 +22,6 @@ selected_t <- "subsidies"
 ```{r}
 s_year <- 2014
 ```
-
 ### **[2013](04_subsidies_2013.html) [2014](04_subsidies_2014.html) [2015](04_subsidies_2015.html) [2016](04_subsidies_2016.html) [2017](04_subsidies_2017.html)**
 
 # `r s_year` `r selected`
@@ -75,7 +74,7 @@ m1 <- leaflet(ru) %>%
               fillColor = ~pal_1(ru@data$sum_mln),
               label = ~paste0(ru@data$NAME_1,
                               ": ", 
-                              round(ru@data$sum_mln, 4), " млн. р.")) %>%
+                              format(round(ru@data$sum_mln, 4), big.mark = " "), " млн. р.")) %>%
   addLegend(pal = pal_1, 
             values = ru@data$sum_mln,
             labFormat = labelFormat(suffix = " млн. р."))
@@ -98,5 +97,5 @@ mapview::sync(m1, m2)
 ```
 <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
 
-### В Москве --- `r moscow$sum_mln` млн. р.
-### Не аффилиировано ни с каким регеоном --- `r minyust$sum_mln` млн. р.
+### В Москве --- `r format(round(moscow$sum_mln), big.mark = " ")` млн. р.
+### Не аффилиировано ни с каким регионом --- `r format(round(minyust$sum_mln), big.mark = " ")` млн. р.
