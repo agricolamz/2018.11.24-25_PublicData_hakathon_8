@@ -65,7 +65,7 @@ class: middle
 
 class: center, middle
 
-[Давайте посмотрим сайт!](https://agricolamz.github.io/2018_mosfindata_hackathon_4/01_tax.html)
+[Давайте посмотрим сайт!](https://agricolamz.github.io/2018.11.24-25_PublicData_hakathon_8/)
 
 ---
 
